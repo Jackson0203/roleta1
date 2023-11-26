@@ -1,7 +1,6 @@
 const express = require('express');
 const puppeteer = require('puppeteer');
 
-
 const app = express();
 const resultados = [];
 
@@ -42,17 +41,16 @@ async function obterNumeroRoleta(url, maxTentativas = 5) {
   const isLocal = process.env.NODE_ENV !== 'production'; // Verifica se está rodando localmente
 
   if (!isLocal && !process.env.PUPPETEER_EXECUTABLE_PATH) {
-    console.error('A variável de ambiente CHROME_BIN não está definida. Certifique-se de que o ambiente Render esteja configurado corretamente.');
+    console.error('A variável de ambiente PUPPETEER_EXECUTABLE_PATH não está definida. Certifique-se de que o ambiente Render esteja configurado corretamente.');
     process.exit(1);
   }
 
   const browser = await puppeteer.launch({
-    executablePath: process.env.NODE === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH
-    : puppeteer.executablePath(),
+    executablePath: isLocal ? null : process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: "new",
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
-  
+
   const page = await browser.newPage();
 
   // Ajuste o tempo limite de navegação para 150 segundos
