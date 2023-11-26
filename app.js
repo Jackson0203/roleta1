@@ -12,15 +12,12 @@ app.get('/', (req, res) => {
   res.render('index', { resultados_por_data: resultadosPorData });
 });
 
-
 async function coletarDados() {
   while (true) {
     try {
       const resultado = await obterResultadoRoleta();
       resultados.push(resultado);
       console.log(`Novo resultado coletado: ${JSON.stringify(resultado)}`);
-
-      await aguardar(9850); // Aguarda 30 segundos antes de buscar o próximo resultado
 
       await aguardar(30000); // Aguarda 30 segundos antes de buscar o próximo resultado
     } catch (error) {
