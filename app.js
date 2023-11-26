@@ -48,7 +48,9 @@ async function obterNumeroRoleta(url, maxTentativas = 5) {
   const browser = await puppeteer.launch({
     executablePath: isLocal ? null : process.env.CHROME_BIN,
     headless: "new",
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
+  
   const page = await browser.newPage();
 
   // Ajuste o tempo limite de navegação para 150 segundos
