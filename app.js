@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
   res.render('index', { resultados_por_data: resultadosPorData });
 });
 
+
 async function coletarDados() {
   while (true) {
     try {
