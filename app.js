@@ -1,5 +1,6 @@
 const express = require('express');
 const puppeteer = require('puppeteer');
+require('dotenv').config();
 
 const app = express();
 const resultados = [];
@@ -46,7 +47,8 @@ async function obterNumeroRoleta(url, maxTentativas = 5) {
   }
 
   const browser = await puppeteer.launch({
-    executablePath: isLocal ? null : process.env.CHROME_BIN,
+    executablePath: process.env.NODE === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH
+    : puppeteer.executablePath(),
     headless: "new",
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
