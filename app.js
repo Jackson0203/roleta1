@@ -37,7 +37,7 @@ async function obterResultadoRoleta() {
   return { data: today, conteudo: `${currentTime}: ${rouletteNumber}` };
 }
 
-async function obterNumeroRoleta(url, maxTentativas = 5) {
+async function obterNumeroRoleta(url, maxTentativas = 10) {
   const isLocal = process.env.NODE_ENV !== 'production'; // Verifica se está rodando localmente
 
   if (!isLocal && !process.env.PUPPETEER_EXECUTABLE_PATH) {
