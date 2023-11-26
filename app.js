@@ -38,7 +38,10 @@ async function obterResultadoRoleta() {
 }
 
 async function obterNumeroRoleta(url, maxTentativas = 5) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: process.env.CHROME_BIN || null,
+    headless: "new",
+  });
   const page = await browser.newPage();
 
   // Ajuste o tempo limite de navegação para 150 segundos
