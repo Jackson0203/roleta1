@@ -41,7 +41,7 @@ async function obterResultadoRoleta() {
 async function obterNumeroRoleta(url, maxTentativas = 5) {
   const isLocal = process.env.NODE_ENV !== 'production'; // Verifica se está rodando localmente
 
-  if (!isLocal && !process.env.CHROME_BIN) {
+  if (!isLocal && !process.env.PUPPETEER_EXECUTABLE_PATH) {
     console.error('A variável de ambiente CHROME_BIN não está definida. Certifique-se de que o ambiente Render esteja configurado corretamente.');
     process.exit(1);
   }
