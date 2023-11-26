@@ -38,8 +38,10 @@ async function obterResultadoRoleta() {
 }
 
 async function obterNumeroRoleta(url, maxTentativas = 5) {
+  const isLocal = process.env.NODE_ENV !== 'production'; // Verifica se está rodando localmente
+
   const browser = await puppeteer.launch({
-    executablePath: process.env.CHROME_BIN || null,
+    executablePath: isLocal ? null : process.env.CHROME_BIN,
     headless: "new",
   });
   const page = await browser.newPage();
@@ -100,10 +102,14 @@ function agruparResultadosPorData(resultados) {
 }
 
 if (require.main === module) {
-  const coletaThread = coletarDados();
+  try {
+    const coletaThread = coletarDados();
 
-  const server = app.listen(0, () => {
-    const port = server.address().port;
-    console.log(`Servidor iniciado em http://localhost:${port}`);
-  });
+    const server = app.listen(0, () => {
+      const port = server.address().port;
+      console.log(`Servidor iniciado em http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Erro ao iniciar a coleta de dados:', error.message);
+  }
 }
