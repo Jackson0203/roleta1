@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Roleta</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        .column {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        var socket = io.connect(`http://${document.domain}:${location.port}/resultado`);
+
+        socket.on('connect', () => {
+            console.log('Conectado ao servidor WebSocket');
+        });
+
+        socket.on('novo_resultado', (resultado) => {
+            const resultadosLista = document.getElementById('resultados-lista');
+            const novoResultado = document.createElement('li');
+            novoResultado.innerText = resultado.conteudo;
+            resultadosLista.appendChild(novoResultado);
+        });
+
+        // Função para atualizar a página automaticamente
+        function atualizarPagina() {
+            location.reload();
+        }
+
+        // Atualizar a página a cada 60 segundos (60000 milissegundos)
+        setInterval(atualizarPagina, 60000);
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Resultados da Roleta</h1>
+      <div id="resultados-lista" class="row">
+        <% for (const [data, resultados_do_dia] of Object.entries(resultados_por_data)) { %>
+          <div class="col-md-4">
+            <div class="card column">
+              <div class="card-header">
+                <h2><%= data %></h2>
+              </div>
+              <ul class="list-group list-group-flush">
+                <% for (const resultado of resultados_do_dia) { %>
+                  <li class="list-group-item"><%= resultado %></li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+</body>
+</html>
